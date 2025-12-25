@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Noise Encoder/Decoder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" sizes="640x640" type="image/png" href="/logo.png">
+</head>
+<body data-theme="light">
+    <div class="container">
+        <header>
+            <h1>Image Encoder/Decoder</h1>
+            <p class="subtitle">Made just for your privacy.</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active" data-tab="encode">Encode Image</button>
+            <button class="tab-button" data-tab="decode">Decode Image</button>
+        </div>
+
+        <!-- Encode Tab -->
+        <div id="encode" class="tab-content active">
+            <div class="card">
+                <h2>Encode Image to Noise</h2>
+                <p>Upload an image and convert it into a noise-like encoded image. The original can be restored using the decode function.</p>
+                
+                <div class="form-group">
+                    <div class="upload-area" id="encodeUploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Drop your image here</h3>
+                        <p>or click to browse (JPG, PNG, WEBP)</p>
+                        <input type="file" id="encodeFileInput" class="file-input" accept="image/jpeg,image/png,image/webp">
+                        <button class="btn" id="encodeBrowseBtn">
+                            <i class="fas fa-folder-open"></i> Browse Files
+                        </button>
+                    </div>
+                </div>
+
+                <div id="encodePreview" class="preview-container" style="display: none;">
+                    <div class="image-preview">
+                        <h4>Original Image</h4>
+                        <div class="image-box">
+                            <img id="encodeOriginalPreview" src="" alt="Original preview">
+                            <div class="image-placeholder" id="encodeOriginalPlaceholder">
+                                <i class="fas fa-image"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-preview">
+                        <h4>Encoded Image</h4>
+                        <div class="image-box">
+                            <img id="encodeEncodedPreview" src="" alt="Encoded preview">
+                            <div class="image-placeholder" id="encodeEncodedPlaceholder">
+                                <i class="fas fa-random"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Noise Intensity:</span>
+                        <span class="quality-value" id="encodeIntensityValue">Medium</span>
+                    </div>
+                    <input type="range" min="1" max="10" value="5" class="slider" id="encodeIntensity">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary);">
+                        <span>Low</span>
+                        <span>Medium</span>
+                        <span>High</span>
+                    </div>
+                </div>
+
+                <div class="progress-container" id="encodeProgress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="encodeProgressFill"></div>
+                    </div>
+                    <div class="progress-text" id="encodeProgressText">Processing...</div>
+                </div>
+
+                <div class="alert" id="encodeAlert"></div>
+
+                <div class="action-buttons">
+                    <button class="btn" id="encodeBtn">
+                        <i class="fas fa-random"></i> Encode to Noise
+                    </button>
+                    <button class="btn" id="downloadEncodedBtn" disabled>
+                        <i class="fas fa-download"></i> Download Encoded Image
+                    </button>
+                    <button class="btn" id="resetEncodeBtn">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+
+                <div class="instructions">
+                    <h3>How Encoding Works:</h3>
+                    <ul>
+                        <li>Your image is converted to pixel data in your browser</li>
+                        <li>Pixel values are transformed using a reversible algorithm</li>
+                        <li>The result is a noise-like image that hides the original content</li>
+                        <li>Noise intensity controls how much the image is scrambled</li>
+                        <li>Use the decode function to restore the original image</li>
+                        <li>No data is ever sent to any server - everything happens locally</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Decode Tab -->
+        <div id="decode" class="tab-content">
+            <div class="card">
+                <h2>Decode Noise to Image</h2>
+                <p>Upload an encoded noise image to restore the original image.</p>
+                
+                <div class="form-group">
+                    <div class="upload-area" id="decodeUploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Drop your encoded image here</h3>
+                        <p>or click to browse</p>
+                        <input type="file" id="decodeFileInput" class="file-input" accept="image/*">
+                        <button class="btn" id="decodeBrowseBtn">
+                            <i class="fas fa-folder-open"></i> Browse Files
+                        </button>
+                    </div>
+                </div>
+
+                <div id="decodePreview" class="preview-container" style="display: none;">
+                    <div class="image-preview">
+                        <h4>Encoded Image</h4>
+                        <div class="image-box">
+                            <img id="decodeEncodedPreview" src="" alt="Encoded preview">
+                            <div class="image-placeholder" id="decodeEncodedPlaceholder">
+                                <i class="fas fa-random"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-preview">
+                        <h4>Decoded Image</h4>
+                        <div class="image-box">
+                            <img id="decodeDecodedPreview" src="" alt="Decoded preview">
+                            <div class="image-placeholder" id="decodeDecodedPlaceholder">
+                                <i class="fas fa-image"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress-container" id="decodeProgress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="decodeProgressFill"></div>
+                    </div>
+                    <div class="progress-text" id="decodeProgressText">Processing...</div>
+                </div>
+
+                <div class="alert" id="decodeAlert"></div>
+
+                <div class="action-buttons">
+                    <button class="btn" id="decodeBtn">
+                        <i class="fas fa-image"></i> Decode to Original
+                    </button>
+                    <button class="btn" id="downloadDecodedBtn" disabled>
+                        <i class="fas fa-download"></i> Download Decoded Image
+                    </button>
+                    <button class="btn" id="resetDecodeBtn">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+
+                <div class="instructions">
+                    <h3>Important Notes:</h3>
+                    <ul>
+                        <li>Only images encoded with this tool can be decoded</li>
+                        <li>The original image quality and dimensions are preserved</li>
+                        <li>Higher noise intensity may affect image quality slightly</li>
+                        <li>All processing is done locally in your browser - no server involved</li>
+                        <li>Works offline after the page has loaded</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Image Noise Encoder/Decoder &copy; 2026 | All processing happens in your browser. No data is sent to any server.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
