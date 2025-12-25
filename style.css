@@ -24,6 +24,13 @@
     --text-secondary: var(--olive-leaf);
     --border-color: var(--sunlit-clay);
 }
+[data-theme="dark"] {
+    --bg-color: #0f1310;          /* deep dark background */
+    --card-bg: #1b201b;           /* slightly lifted cards */
+    --text-color: #f3f3e6;        /* soft off white */
+    --text-secondary: #b7c2a3;    /* muted olive */
+    --border-color: #6b4f2a;      /* warm clay accent */
+}
 
 * {
     margin: 0;
